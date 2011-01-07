@@ -15,6 +15,9 @@ module Zap
       end
       
       def run(*args)
+        
+        @called = $0.split('/').pop
+        
         cmd = args[0]
         main = args[1]
         minor = args[2]
@@ -38,15 +41,24 @@ module Zap
           storage.writeback
       end
       
+      def executable
+        @executable ||= $0.split('/').pop
+      end
+      
       def help
         txt = %{
-          - peanut: help ---------------------------------------------
+                    ::::::::: :::.  ::::::::::.  .:
+                    '`````;;; ;;`;;  `;;;```.;;;;;;
+                        .n[[',[[ '[[, `]]nnn]]' '[[
+                      ,$$P" c$$$cc$$$c $$$""     $$
+                    ,888bo,_ 888   888,888o      ""
+                     `""*UMM YMM   ""` YMMMb     MM
+                    #{executable}'s snatchin yo clipboards up.
           
-          peanut help                 show this help overview
-          peanut add <key> <value>    adds the key/value pair to your bucket
-          peanut list                 shows everything currently in your bucket
-          peanut delete <key>         removes the key/value pair where key matches
-          peanut get <key>            copies the value of key to your clipboard
+          `zap foo bar` sets the "foo" value to "bar"
+              `zap foo` copies the contents of "foo" into your clipboard
+            `zap foo p` copies the contents of your clipboard into "foo"
+             `zap list` shows the values zap knows about.            
         }.gsub(/^ {10}/, '') # murderous villian of whitespace
         
         puts txt
