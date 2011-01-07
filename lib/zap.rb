@@ -1,4 +1,9 @@
+require 'yajl'
+
 module Zap
+  
+  require 'zap/clipboard'
+  
   def self.storage
     @storage ||= ::Zap::Storage.new
   end
@@ -24,7 +29,7 @@ module Zap
         elsif cmd == "del"
           storage.store.delete(main) if main
         elsif cmd == "get"
-          Clipboard.copy_to_clipboard(storage.store[main])
+          Clipboard.copy(storage.store[main])
         elsif cmd == "list"
           storage.store.each do |key, value|
             puts "#{key}: #{value}"
@@ -82,22 +87,6 @@ module Zap
 
     def writeback
       File.open(json_file, 'w') { |f| f.write(to_json(@store)) }
-    end
-  end
-  
-  class Clipboard
-    class << self
-
-      def copy_to_clipboard(string)
-        cmd = 
-        if RUBY_PLATFORM =~ /linux/
-          "xclip -selection clipboard"
-        else
-          "pbcopy"
-        end
-        
-        `echo #{string} | tr -d "\n" | #{cmd}`        
-      end
     end
   end
 end
