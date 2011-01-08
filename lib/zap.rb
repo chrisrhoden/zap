@@ -3,15 +3,16 @@ require 'yajl'
 module Zap
   
   require 'zap/clipboard'
+  require 'zap/store'
   
-  def self.storage
-    @storage ||= ::Zap::Storage.new
+  def self.store(path = ENV['HOME']+'/.zapstore')
+    @store ||= ::Zap::Store.new(path)
   end
   
   class Command
     class << self
-      def storage
-        Zap.storage
+      def store
+        Zap.store
       end
       
       def run(*args)
@@ -28,17 +29,17 @@ module Zap
       
       def delegate(cmd, main, minor)
         if cmd == "add"
-          storage.store.merge!({main.to_sym => minor}) if main && minor
+          store[main.to_sym] = minor if main && minor
         elsif cmd == "del"
-          storage.store.delete(main) if main
+          store[main] = nil if main
         elsif cmd == "get"
-          Clipboard.copy(storage.store[main])
+          Clipboard.copy(store[main])
         elsif cmd == "list"
-          storage.store.each do |key, value|
+          store.each_pair do |key, value|
             puts "#{key}: #{value}"
           end
         end
-          storage.writeback
+          store.write
       end
       
       def executable
@@ -63,42 +64,6 @@ module Zap
         
         puts txt
       end      
-    end
-  end
-  
-  class Storage
-    
-    JSON_FILE = "#{ENV['HOME']}/.zapstore"
-    
-    attr_accessor :store
-    
-    def initialize
-      @store = {}
-      explode_json(json_file)
-    end
-
-    def json_file
-      JSON_FILE
-    end
-
-    def to_json(hash)
-      Yajl::Encoder.encode(hash)
-    end
-    
-    def explode_json(file)
-      init_json unless File.exists?(file)
-      
-      json = File.new(file, 'r')
-      @store = Yajl::Parser.parse(json)
-    end
-    
-    def init_json
-      File.open(json_file, 'w') { |f| f.write "{}"}
-      writeback
-    end
-
-    def writeback
-      File.open(json_file, 'w') { |f| f.write(to_json(@store)) }
     end
   end
 end
