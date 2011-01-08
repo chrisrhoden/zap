@@ -1,7 +1,7 @@
-#!/bin/env ruby
+#!/usr/bin/env ruby
 
-begin; require 'rubygems'; rescue LoadError; end
-
+require 'rubygems' rescue LoadError
+$:.unshift File.dirname(__FILE__) + '/../lib/'
 require 'zap'
 
 Zap::Command.run(*ARGV)
