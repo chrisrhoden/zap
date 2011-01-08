@@ -10,17 +10,17 @@ module Zap
       self.store = Yajl::Parser.parse(File.new(file, 'r'))
     end
   
-    def to_json(hash)
-      Yajl::Encoder.encode(hash)
+    def to_json
+      Yajl::Encoder.encode(store)
     end
   
     def write
-      File.open(file, 'w') { |f| f.write(to_json(store)) }
+      File.open(file, 'w') { |f| f.write(to_json) }
     end
     
     def []=(key, value)
-      store[key] = value
-      store.delete(key) if value.nil?
+      self.store[key] = value
+      self.store.delete(key) if value.nil?
       value
     end
     
