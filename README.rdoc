@@ -1,26 +1,28 @@
-= Peanut
+= zap
 
-Peanut is a cheap knockoff of the Boom gem. Instead of managing different lists, Peanut uses a "Bucket" to dump all of your items.
+zap is a fork of peanut, which was lovingly crafted by the_gastropod as a
+shameless lift of boom. So zap is like boom, but it has one less letter.
+That's better!
 
-== Usage
+== usage
+    
+    > gem install zap
+    > zap
+              ::::::::: :::.  ::::::::::.  .:
+              '`````;;; ;;`;;  `;;;```.;;;;;;
+                  .n[[',[[ '[[, `]]nnn]]' '[[
+                ,$$P" c$$$cc$$$c $$$""     $$
+              ,888bo,_ 888   888,888o      ""
+               `""*UMM YMM   ""` YMMMb     MM
+              zap's snatchin yo clipboards up.
 
-I'd recommend using an alias for Peanut. Something like:
+    `zap foo bar` sets the "foo" value to "bar"
+        `zap foo` copies the contents of "foo" into your clipboard
+     `zap rm foo` unsets the value of "foo"
+      `zap foo p` copies the contents of your clipboard into "foo"
+       `zap list` shows the values zap knows about. 
+       `zap help` shows this help.
 
-  alias peanut="/path/to/your/peanut.rb"
 
-Assuming such an alias is setup, usage is pretty easy:
-
-  peanut help                 show a quick help overview
-  peanut add <key> <value>    adds the key/value pair to your bucket
-  peanut list                 shows everything currently in your bucket
-  peanut del <key>         removes the key/value pair where key matches
-  peanut get <key>            copies the value of key to your clipboard
-
-== Requirements
-
-Requires the yajl gem. Install rajl with:
-
-  gem sources -a http://gemcutter.org
-  sudo gem install yajl-ruby
-
-Peanut should function on Linux, BSD (assuming you run X), or Mac OS X.
+== requirements
+Some unix-y environment. OSX or X.
